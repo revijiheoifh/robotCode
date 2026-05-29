@@ -1,11 +1,10 @@
 // test_mpu6050.cpp
-// Compile with: g++ test_mpu6050.cpp -o test_mpu6050 -li2c
+// Compile with: g++ test_mpu6050.cpp -o test_mpu6050 -lMPU6050 -pthread
 
 #define _USE_MATH_DEFINES
 #include "MPU6050.h"
 #include <iostream>
 #include <cmath>
-
 
 using namespace std;
 
@@ -17,8 +16,8 @@ int main() {
     cout << "MPU6050 Tester - Raw Accelerometer & Gyroscope Data" << endl;
     cout << "=====================================================" << endl;
 
-    double ax, ay, az;
-    double gx, gy, gz;
+    float ax, ay, az;
+    float gx, gy, gz;
     double complementaryAngle = 0.0;
     
     while (true) {
@@ -33,8 +32,7 @@ int main() {
         cout << "  Z: " << az << endl;
 
 	// Calculate the accelorometer angle presumably through trig
-	double accelAngleY = atan2(ay/sqrt((ax*ax) + (az*az))) * 180 / M_PI;
-        cout << accelAngleY << endl;
+	double accelAngleY = atan2(ay, sqrt((ax*ax) + (az*az))) * 180 / M_PI;
 	
 	// Mutliply the final result by the weight you assign
 	double accelWeight = 0.01;
@@ -60,8 +58,9 @@ int main() {
 	double gyroPitchFinal = gyroPitch2 * gyroWeight;
 	
 	// add the accel values and the gyro values together
-        double complementaryAngle = gyroPitchFinal + finalAccelAngleY;
-	
+        complementaryAngle = gyroPitchFinal + finalAccelAngleY;
+
+	cout << complementaryAngle << endl;
         usleep(100000); // 100ms (~10Hz)
     }
 

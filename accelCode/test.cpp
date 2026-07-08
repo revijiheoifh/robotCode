@@ -19,11 +19,20 @@ int main() {
     float ax, ay, az;
     float gx, gy, gz;
     double complementaryAngle = 0.0;
+
+    float filteredAx = 0.0f;
+    float filteredAy = 0.0f;
+    float filteredAz = 0.0f;
+    float alpha = 0.15f;
+
     
     while (true) {
         mpu.getAccel(&ax, &ay, &az);
         mpu.getGyro(&gx, &gy, &gz);
 
+	filteredAx = alpha * ax + (1.0 - alpha) * filteredAx;
+	filteredAy = alpha * ay + (1.0 - alpha) * filteredAy;
+	filteredAz = alpha * az + (1.0 - alpha) * filteredAz;
 	
 	// Get accelorometer measurements (may need to lowpass this)
 	cout << "\n--- Accelerometer (g) ---" << endl;
@@ -31,11 +40,16 @@ int main() {
         cout << "  Y: " << ay << endl;
         cout << "  Z: " << az << endl;
 
+	cout << "------------------------------------------------\n";
+	cout << "Filtered X: " << filteredAx << endl;
+	cout << "Filtered Y: " << filteredAy << endl;
+	cout << "Filtered Z: " << filteredAz << endl;
+
 	// Calculate the accelorometer angle presumably through trig
-	double accelAngleY = atan2(ay, sqrt((ax*ax) + (az*az))) * 180 / M_PI;
+	double accelAngleY = atan2(filteredAy, sqrt((filteredAx*filteredAx) + (filteredAz*filteredAz))) * 180 / M_PI;
 	
 	// Mutliply the final result by the weight you assign
-	double accelWeight = 0.01;
+	double accelWeight = 0.20;
 	double finalAccelAngleY = accelAngleY * accelWeight; 
 	
 	
@@ -54,7 +68,7 @@ int main() {
 	double gyroPitch2 = gyroPitchInit + complementaryAngle;
 	
 	// multiply the result by the gyro weight
-	double gyroWeight = 0.99;
+	double gyroWeight = 1.0 - accelWeight;
 	double gyroPitchFinal = gyroPitch2 * gyroWeight;
 	
 	// add the accel values and the gyro values together

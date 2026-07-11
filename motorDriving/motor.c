@@ -1,11 +1,10 @@
 #include <pigpio.h>
-#include <stdio.h>
-#include <time.h>
 #include <signal.h>
 #include <stdlib.h>
+#include <stdio.h>
 
-int dirPin = 14; // PWM pin
-int stepPin = 15; // non-PWM pin
+int dirPin = 14;
+int stepPin = 15;
 
 void setup();
 void update();
@@ -22,7 +21,6 @@ int main()
     signal(SIGINT, handleExit);
     signal(SIGTERM, handleExit);
 
-    
     setup();
     update();
   }
@@ -36,15 +34,18 @@ void setup()
 
 void update()
 {
+  int pinDelayMicroSecs = 500;
+  int noOfSteps = 400;
+
   while(1)
   {
     gpioWrite(dirPin, 1);
-    for(int x = 0; x < 200; x++)
+    for(int x=0; x<noOfSteps; x++)
     {
       gpioWrite(stepPin, 1);
-      gpioDelay(500);
+      gpioDelay(pinDelayMicroSecs);
       gpioWrite(stepPin, 0);
-      gpioDelay(500);
+      gpioDelay(pinDelayMicroSecs);
     }
   }
 }

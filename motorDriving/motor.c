@@ -1,58 +1,28 @@
+#include "motor.h"
 #include <pigpio.h>
-#include <signal.h>
-#include <stdlib.h>
-#include <stdio.h>
 
-int dirPin = 14;
-int stepPin = 15;
-
-void setup();
-void update();
-void handleExit();
-
-int main()
+struct motorParams
 {
-  if (gpioInitialise() < 0)
-  {
-    printf("initialisation failed\n");
-  }
-  else
-  {
-    signal(SIGINT, handleExit);
-    signal(SIGTERM, handleExit);
+  int dirPin, stepPin;
+  int noOfPulses;
+  float delayNum;
+};
 
-    setup();
-    update();
-  }
+void motorInit(motorParams_t* motorInitP)
+{
+  gpioSetMode(motorInitP->stepPin, PI_OUTPUT);
+  gpioSetMode(motorInitP->dirPin, PI_OUTPUT);
 }
 
-void setup()
+void motorControl(motorParams_t *params)
 {
-  gpioSetMode(dirPin, PI_OUTPUT);
-  gpioSetMode(stepPin, PI_OUTPUT);
-}
-
-void update()
-{
-  int pinDelayMicroSecs = 500;
-  int noOfSteps = 400;
-
-  while(1)
+  gpioWrite(params->dirPin, 1);
+  for(int x = 0; x < params->noOfPulses; x++)
   {
-    gpioWrite(dirPin, 1);
-    for(int x=0; x<noOfSteps; x++)
-    {
-      gpioWrite(stepPin, 1);
-      gpioDelay(pinDelayMicroSecs);
-      gpioWrite(stepPin, 0);
-      gpioDelay(pinDelayMicroSecs);
-    }
-  }
-}
+    gpioWrite(params->stepPin, 1);
+    gpioDelay(params->delayNum = 500);
+    gpioWrite(params->stepPin, 0);
+    gpioDelay(params->delayNum = 500);
 
-void handleExit(int signum)
-{
-  printf("\nClearing everything...\n");
-  gpioTerminate();
-  exit(0);
+  }
 }

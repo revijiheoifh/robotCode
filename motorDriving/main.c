@@ -1,11 +1,8 @@
 #include <pigpio.h>
-#include <stdio.h>
-#include <time.h>
 #include <signal.h>
 #include <stdlib.h>
-
-int dirPin = 14; // PWM pin
-int stepPin = 15; // non-PWM pin
+#include <stdio.h>
+#include "motor.h"
 
 void setup();
 void update();
@@ -22,7 +19,6 @@ int main()
     signal(SIGINT, handleExit);
     signal(SIGTERM, handleExit);
 
-    
     setup();
     update();
   }
@@ -30,22 +26,14 @@ int main()
 
 void setup()
 {
-  gpioSetMode(dirPin, PI_OUTPUT);
-  gpioSetMode(stepPin, PI_OUTPUT);
+//  struct motorParams m;
 }
 
 void update()
 {
   while(1)
   {
-    gpioWrite(dirPin, 1);
-    for(int x = 0; x < 200; x++)
-    {
-      gpioWrite(stepPin, 1);
-      gpioDelay(500);
-      gpioWrite(stepPin, 0);
-      gpioDelay(500);
-    }
+    printf("smd\n");
   }
 }
 

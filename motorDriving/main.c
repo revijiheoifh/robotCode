@@ -26,15 +26,26 @@ int main()
 
 void setup()
 {
-//  struct motorParams m;
+  // struct
+  int stepPin = 14; // should be const
+  int dirPin = 15; // should be const
+  int dirPinValue = 1;
+  int noOfPulses = 200;
+  float delayNum = 500;
+
+  motorParams_t a = motorParamsCreate(stepPin, dirPin, dirPinValue, noOfPulses, delayNum);
+  // destroyMotorParams(a);
+  printf("%d",getStepPin(a));
+
+
 }
 
 void update()
 {
-  while(1)
+  /*while(1)
   {
     printf("smd\n");
-  }
+  }*/
 }
 
 void handleExit(int signum)

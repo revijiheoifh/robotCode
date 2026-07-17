@@ -2,55 +2,92 @@
 #include <pigpio.h>
 #include <stdlib.h>
 
+
+
 struct motorParams
 {
   int dirPin, stepPin;
   int dirPinValue;
   int noOfPulses;
-  float delayNum;
+  int delayNum;
 };
 
-motorParams_t motorParamsCreate(int stepPin, int dirPin, int dirPinValue, int noOfPulses, float delayNum)
+
+
+motorParams_t motorParamsCreate(int stepPin, int dirPin)
 {
   motorParams_t motorParamsInst = calloc(1, sizeof(struct motorParams));
   motorParamsInst->dirPin = dirPin;
   motorParamsInst->stepPin = stepPin;
-  motorParamsInst->dirPinValue = dirPinValue;
-  motorParamsInst->noOfPulses = noOfPulses;
-  motorParamsInst->delayNum = delayNum;
   return motorParamsInst;
 }
+
+
+
+
+
+
 
 int getStepPin(motorParams_t motorParamsInst)
 {
   return motorParamsInst->stepPin;
 }
 
-
 int getDirPin(motorParams_t motorParamsInst)
 {
   return motorParamsInst->dirPin;
 }
 
+
+
+
+
+
+
+void setDirPinValue(motorParams_t motorParamsInst, int dirPinValue)
+{
+  motorParamsInst->dirPinValue = dirPinValue;
+}
 int getDirPinValue(motorParams_t motorParamsInst)
 {
   return motorParamsInst->dirPinValue;
 }
 
+
+
+
+
+void setNoOfPulses(motorParams_t motorParamsInst, int noOfPulses)
+{
+  motorParamsInst->noOfPulses = noOfPulses;
+}
 int getNoOfPulses(motorParams_t motorParamsInst)
 {
   return motorParamsInst->noOfPulses;
 }
 
-float getDelayNum(motorParams_t motorParamsInst)
+
+
+
+void setDelayNum(motorParams_t motorParamsInst, int delayNum)
+{
+  motorParamsInst->delayNum = delayNum;
+}
+
+int getDelayNum(motorParams_t motorParamsInst)
 {
   return motorParamsInst->delayNum;
 }
 
-void motorInit(motorParams_t motorInitP)
+
+
+
+
+
+void motorInit(motorParams_t motorParamsInst)
 {
-  gpioSetMode(motorInitP->stepPin, PI_OUTPUT);
-  gpioSetMode(motorInitP->dirPin, PI_OUTPUT);
+  gpioSetMode(motorParamsInst->stepPin, PI_OUTPUT);
+  gpioSetMode(motorParamsInst->dirPin, PI_OUTPUT);
 }
 
 void motorControl(motorParams_t params)
@@ -66,7 +103,11 @@ void motorControl(motorParams_t params)
   }
 }
 
+
+
+
 void destroyMotorParams(motorParams_t motorParamsInst)
 {
   free(motorParamsInst);
 }
+

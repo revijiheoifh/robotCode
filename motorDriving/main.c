@@ -31,13 +31,11 @@ void setup()
   int dirPin = 15; // should be const
   int dirPinValue = 1;
   int noOfPulses = 200;
-  float delayNum = 500;
+  int delayNum = 500;
 
   motorParams_t a = motorParamsCreate(stepPin, dirPin, dirPinValue, noOfPulses, delayNum);
   // destroyMotorParams(a);
   printf("%d",getStepPin(a));
-
-
 }
 
 void update()

@@ -2,8 +2,6 @@
 #include <pigpio.h>
 #include <stdlib.h>
 
-
-
 struct motorParams
 {
   int dirPin, stepPin;

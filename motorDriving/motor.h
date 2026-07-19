@@ -23,7 +23,7 @@ void destroyMotorParams(motorParams_t motorParamsInst);
 
 // you do need those
 
-void motorInit(motorParams_t motorInitP);
-void motorControl(motorParams_t motorParams);
+void motorInit(motorParams_t motorParamsInst);
+void motorControl(motorParams_t motorParamsInst);
 
 #endif

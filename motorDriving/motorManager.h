@@ -38,8 +38,8 @@ void setup()
 
 void update()
 {
-  motorControl(a);
-  motorControl(b);
+   motorControl(a);
+   motorControl(b);
 }
 
 void handleExit(int signum)

@@ -49,7 +49,7 @@ int main() {
 	double accelAngleY = atan2(filteredAy, sqrt((filteredAx*filteredAx) + (filteredAz*filteredAz))) * 180 / M_PI;
 	
 	// Mutliply the final result by the weight you assign
-	double accelWeight = 0.20;
+	double accelWeight = 0.01;
 	double finalAccelAngleY = accelAngleY * accelWeight; 
 	
 	

@@ -6,7 +6,7 @@
 
 import socket
 
-HOST = "192.168.0.59"
+HOST = "192.168.0.21"
 PORT = 18736
 
 # create socket and connect

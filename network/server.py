@@ -1,11 +1,12 @@
 # Took server code from https://stackoverflow.com/questions/69162232/simple-two-way-socket-communication
 # There's a problem where the code is hanging but luckily there's also a solution as well but I want to test it as it is for now
+## implemented the fix that was suggested in the stackoverflow forum.
 
 import socket
 import time
 
-HOST = "127.0.0.1"
-PORT = 18735
+HOST = "192.168.0.21"
+PORT = 18736
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((HOST, PORT))
@@ -22,7 +23,10 @@ while True:
     if not data:
         break
     print(data.decode())
-    # conn.sendall(b"OK")  This line fixes the problem!
 
-conn.sendall(b"Finished")
-s.close()
+    for i in range(len(data.decode())):
+        if data.decode()[i] == '>':
+            conn.sendall(b"Finished!")
+            s.close()
+    
+

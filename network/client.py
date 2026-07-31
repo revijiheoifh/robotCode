@@ -6,15 +6,15 @@
 
 import socket
 
-HOST = "127.0.0.1"
-PORT = 18735
+HOST = "192.168.0.59"
+PORT = 18736
 
 # create socket and connect
 cs = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 cs.connect((HOST, PORT))
 
 # send data
-cs.sendall(b"123456")
+cs.sendall(b"123456>")
 
 # wait for a result
 data = cs.recv(1024)

@@ -1,6 +1,22 @@
+# Source - https://stackoverflow.com/q/69162232
+
+# Posted by torayeff, modified by community. See post 'Timeline' for change history
+
+# Retrieved 2026-07-31, License - CC BY-SA 4.0
+
 import socket
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client_socket.connect((192.168.0.21, 12345))
-client_socket.send(b"Hello from client!")
-print(client_socket.recv(1024).decode())
-client_socket.close()
+
+HOST = "127.0.0.1"
+PORT = 18735
+
+# create socket and connect
+cs = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+cs.connect((HOST, PORT))
+
+# send data
+cs.sendall(b"123456")
+
+# wait for a result
+data = cs.recv(1024)
+print("result: ", data)
+cs.close()

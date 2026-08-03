@@ -3,4 +3,5 @@ import subprocess
 def tts(text):
     subprocess.run(["espeak", text])
 
-tts("israel epstein")
+# changed this because it is offensive
+tts("I like cheese")

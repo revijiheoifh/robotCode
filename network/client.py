@@ -6,17 +6,20 @@
 
 import socket
 
-HOST = "192.168.0.21"
+HOST = "192.168.0.85"
 PORT = 18736
 
 # create socket and connect
 cs = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 cs.connect((HOST, PORT))
 
-# send data
-cs.sendall(b"123456>")
+messageSend = None
+
+while messageSend != '>':
+    messageSend = input("Send message: ")
+    cs.sendall(messageSend.encode())
 
 # wait for a result
-data = cs.recv(1024)
+data = cs.recv(1024).decode()
 print("result: ", data)
 cs.close()

@@ -5,7 +5,7 @@
 import socket
 import time
 
-HOST = "192.168.0.21"
+HOST = "192.168.0.85"
 PORT = 18736
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -26,7 +26,8 @@ while True:
 
     for i in range(len(data.decode())):
         if data.decode()[i] == '>':
-            conn.sendall(b"Finished!")
+            messageToSendBack = input("message to send back: ")
+            conn.sendall(messageToSendBack.encode())
             s.close()
     
 

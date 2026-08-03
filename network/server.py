@@ -5,29 +5,40 @@
 import socket
 import time
 
-HOST = "192.168.0.85"
-PORT = 18736
+class server:
+    def __init__(self, host, port, sock=None, conn=None, addr=None):
+        self.host = host
+        self.port = port
+        self.sock = sock
+        self.conn = conn
+        self.addr = addr
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind((HOST, PORT))
-s.listen()
-print(f"Listening on {HOST}:{PORT}")
+    def bindAndListen(self):
+        self.sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.bind((self.host, self.port))
+        self.sock.listen()
+        print(f"Listening on {self.host}:{self.port}")
 
-conn, addr = s.accept()
-print(f"Accepted connection from {HOST}:{PORT}")
+    def acceptConnection(self):
+        self.conn, self.addr = self.sock.accept()
+        print(f"Accepted connection from {self.host}:{self.port}")
 
-cmd = ""
-while True:
-    data = conn.recv(2)
-    time.sleep(1)
-    if not data:
-        break
-    print(data.decode())
+    def listenForData(self):
+        while True:
+            data=self.conn.recv(1024)
+            time.sleep(1)
+            if not data:
+                break
+            print(data.decode())
 
-    for i in range(len(data.decode())):
-        if data.decode()[i] == '>':
-            messageToSendBack = input("message to send back: ")
-            conn.sendall(messageToSendBack.encode())
-            s.close()
-    
+            for i in range(len(data.decode())):
+                if data.decode()[i] == '>':
+                    sendMessageBack = input("Message to send back: ")
+                    self.conn.sendall(sendMessageBack.encode())
+                    self.sock.close()
 
+if __name__ == "__main__":
+    serverInst = server('192.168.0.85', 18736)
+    serverInst.bindAndListen()
+    serverInst.acceptConnection()
+    serverInst.listenForData()

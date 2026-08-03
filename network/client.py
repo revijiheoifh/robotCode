@@ -5,21 +5,9 @@
 # Retrieved 2026-07-31, License - CC BY-SA 4.0
 
 import socket
+import server
 
-HOST = "192.168.0.85"
-PORT = 18736
-
-# create socket and connect
-cs = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-cs.connect((HOST, PORT))
-
-messageSend = None
-
-while messageSend != '>':
-    messageSend = input("Send message: ")
-    cs.sendall(messageSend.encode())
-
-# wait for a result
-data = cs.recv(1024).decode()
-print("result: ", data)
-cs.close()
+clientInst = server.client('192.168.0.85', 18736)
+clientInst.connectToServer()
+clientInst.sendMessage()
+clientInst.showResultAndClose()

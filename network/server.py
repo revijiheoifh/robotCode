@@ -37,8 +37,23 @@ class server:
                     self.conn.sendall(sendMessageBack.encode())
                     self.sock.close()
 
-if __name__ == "__main__":
-    serverInst = server('192.168.0.85', 18736)
-    serverInst.bindAndListen()
-    serverInst.acceptConnection()
-    serverInst.listenForData()
+class client:
+    def __init__(self, host, port, messageToSend=None, clientSocket=None):
+        self.host = host
+        self.port = port
+        self.messageToSend = messageToSend
+        self.clientSocket = clientSocket
+
+    def connectToServer(self):
+        self.clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.clientSocket.connect((self.host, self.port))
+
+    def sendMessage(self):
+        while self.messageToSend != '>':
+            self.messageToSend = input("Send to message: ")
+            self.clientSocket.sendall(self.messageToSend.encode())
+
+    def showResultAndClose(self):
+        data = self.clientSocket.recv(1024).decode()
+        print("result: ", data)
+        self.clientSocket.close()

@@ -38,11 +38,12 @@ class server:
                     self.sock.close()
 
 class client:
-    def __init__(self, host, port, messageToSend=None, clientSocket=None):
+    def __init__(self, host, port, messageToSend=None, clientSocket=None, receivedMessage = None):
         self.host = host
         self.port = port
         self.messageToSend = messageToSend
         self.clientSocket = clientSocket
+        self.receivedMessage = receivedMessage
 
     def connectToServer(self):
         self.clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -54,6 +55,6 @@ class client:
             self.clientSocket.sendall(self.messageToSend.encode())
 
     def showResultAndClose(self):
-        data = self.clientSocket.recv(1024).decode()
-        print("result: ", data)
+        self.receivedMessage = self.clientSocket.recv(1024).decode()
+        print("result: ", self.receivedMessage)
         self.clientSocket.close()

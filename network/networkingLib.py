@@ -33,9 +33,13 @@ class server:
 
             for i in range(len(data.decode())):
                 if data.decode()[i] == '>':
-                    sendMessageBack = input("Message to send back: ")
-                    self.conn.sendall(sendMessageBack.encode())
+                    print("Server has closed")
                     self.sock.close()
+
+            sendMessageBack = input("Message to send back: ")
+            self.conn.sendall(sendMessageBack.encode())
+
+            
 
 class client:
     def __init__(self, host, port, messageToSend=None, clientSocket=None, receivedMessage = None):
@@ -49,12 +53,13 @@ class client:
         self.clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.clientSocket.connect((self.host, self.port))
 
-    def sendMessage(self):
-        while self.messageToSend != '>':
-            self.messageToSend = input("Send to message: ")
-            self.clientSocket.sendall(self.messageToSend.encode())
+    def sendMessageShowResult(self):
+        self.messageToSend = input("Send to message: ")
+        self.clientSocket.sendall(self.messageToSend.encode())
 
-    def showResultAndClose(self):
         self.receivedMessage = self.clientSocket.recv(1024).decode()
         print("result: ", self.receivedMessage)
+
+    def closeSocket(self):
+        print("Client has closed")
         self.clientSocket.close()

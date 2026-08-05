@@ -7,7 +7,9 @@ port = 13425
 clientInst = networkingLib.client(host, port)
 
 clientInst.connectToServer()
-clientInst.sendMessage()
-clientInst.showResultAndClose()
 
-textToSpeech.tts(clientInst.receivedMessage)
+while clientInst.messageToSend != '>':
+    clientInst.sendMessageShowResult()
+    textToSpeech.tts(clientInst.receivedMessage)
+
+clientInst.closeSocket()
